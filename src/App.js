@@ -64,7 +64,7 @@ function App() {
         </div>
         <div>
         {state.todos.length > 0 ?
-            state.todos.map((todoen => <p key={todo.id}>{todo.name} : {todo.description}</p>):
+            state.todos.map((todo) => <p key={todo.id}>{todo.name} : {todo.description}</p>):
             <p>Add some todos!</p>
         }
         </div>
