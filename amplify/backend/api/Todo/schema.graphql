@@ -1,7 +1,5 @@
-type MyType @model {
+type Todo @model {
 	id: ID!
 	title: String!
-	content: String!
-	price: Int
-	rating: Float
+	description: String!
 }
