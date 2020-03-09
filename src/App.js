@@ -5,6 +5,7 @@ import PubSub from '@aws-amplify/pubsub';
 
 import { createTodo } from './graphql/mutations';
 import { listTodos } from './graphql/queries';
+import { onCreateTodo } from './graphql/subscriptions';
 
 import awsconfig from './aws-exports';
 import './App.css';
@@ -14,6 +15,7 @@ PubSub.configure(awsconfig);
 
 // Action Types
 const QUERY = 'QUERY';
+const SUBSCRIPTION = 'SUBSCRIPTION';
 
 const initialState = {
     todos: [],
@@ -23,6 +25,8 @@ const reducer = (state, action) => {
     switch (action.type) {
         case QUERY:
             return {...state, todos: action.todos};
+        case SUBSCRIPTION:
+            return {...state, todos:[...state.todos, action.todo]};
         default:
             return state;
     }
@@ -42,6 +46,15 @@ function App() {
             dispatch({ type: QUERY, todos: todoData.data.listTodos.items });
         }
         getData();
+
+        const subscription = API.graphql(graphqlOperation(onCreateTodo)).subscribe({
+            next: (eventData) => {
+                const todo = eventData.value.data.onCreateTodo;
+                dispatch({ type: SUBSCRIPTION, todo });
+            }
+        });
+
+        return () => subscription.unsubscribe();
     }, []);
 
     return (
