@@ -4,7 +4,7 @@ import API, { graphqlOperation } from '@aws-amplify/api';
 import PubSub from '@aws-amplify/pubsub';
 
 import { createTodo } from './graphql/mutations';
-import { list todos } from './graphql/queries';
+import { listTodos } from './graphql/queries';
 
 import awsconfig from './aws-exports';
 import './App.css';
