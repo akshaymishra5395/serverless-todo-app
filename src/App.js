@@ -33,7 +33,7 @@ const reducer = (state, action) => {
 };
 
 async function createNewTodo() {
-    const todo = { name: "Use AWS AppSync", description: "Realtime and offline" };
+    const todo = { title: "Use AWS AppSync", description: "Realtime and offline" };
     await API.graphql(graphqlOperation(createTodo, { input: todo }));
 }
 
@@ -64,7 +64,7 @@ function App() {
         </div>
         <div>
         {state.todos.length > 0 ?
-            state.todos.map((todo) => <p key={todo.id}>{todo.name} : {todo.description}</p>):
+            state.todos.map((todo) => <p key={todo.id}>{todo.title} : {todo.description}</p>):
             <p>Add some todos!</p>
         }
         </div>
