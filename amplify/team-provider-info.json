@@ -17,6 +17,9 @@
                     "appId": "d1yexr8tpmgphk",
                     "type": "cicd"
                 }
+            },
+            "auth": {
+                "serverlesstodoappce588488": {}
             }
         }
     }
