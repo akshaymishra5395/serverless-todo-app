@@ -4,6 +4,8 @@ import API, { graphqlOperation } from '@aws-amplify/api';
 import Auth from '@aws-amplify/auth';
 import PubSub from '@aws-amplify/pubsub';
 
+import { withAuthenticator } from 'aws-amplify-react';
+
 import { createTodo } from './graphql/mutations';
 import { listTodos } from './graphql/queries';
 import { onCreateTodo } from './graphql/subscriptions';
@@ -74,4 +76,5 @@ function App() {
     );
 }
 
-export default App;
+export default withAuthenticator(App);
+
