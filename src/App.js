@@ -1,6 +1,7 @@
 import React, {useEffect, useReducer} from 'react';
 
 import API, { graphqlOperation } from '@aws-amplify/api';
+import Auth from '@aws-amplify/auth';
 import PubSub from '@aws-amplify/pubsub';
 
 import { createTodo } from './graphql/mutations';
@@ -11,6 +12,7 @@ import awsconfig from './aws-exports';
 import './App.css';
 
 API.configure(awsconfig);
+Auth.configure(awsconfig);
 PubSub.configure(awsconfig);
 
 // Action Types
