@@ -1,4 +1,4 @@
-import React, {useEffect, useReducer} from 'react';
+import React, {useEffect, useReducer, useState} from 'react';
 
 import API, { graphqlOperation } from '@aws-amplify/api';
 import Auth from '@aws-amplify/auth';
@@ -36,9 +36,42 @@ const reducer = (state, action) => {
     }
 };
 
-async function createNewTodo() {
-    const todo = { title: "Use AWS AppSync", description: "Realtime and offline" };
+async function createNewTodo(title, description) {
+    const todo = { title: title, description: description };
     await API.graphql(graphqlOperation(createTodo, { input: todo }));
+}
+
+const Todo = ({ title, description }) => <div className="todo">{title}: {description}</div>;
+
+function TodoForm({ addTodo }) {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    if (!title || !description) return;
+    addTodo(title, description);
+    setTitle("");
+    setDescription("");
+  };
+
+  return (
+    <form>
+      <input
+        type="text"
+        className="todoTitle"
+        value={title}
+        onChange={e => setTitle(e.target.value)}
+      />
+      <input
+        type="text"
+        className="todoDescription"
+        value={description}
+        onChange={e => setDescription(e.target.value)}
+      />
+      <button onClick={handleSubmit}/>
+    </form>
+  );
 }
 
 function App() {
@@ -62,13 +95,13 @@ function App() {
     }, []);
 
     return (
+        <div className='.app'>
         <div>
-        <div className="App">
-            <button onClick={createNewTodo}>Add Todo</button>
+            <TodoForm addTodo={createNewTodo}/>
         </div>
-        <div>
+        <div className='todo-list'>
         {state.todos.length > 0 ?
-            state.todos.map((todo) => <p key={todo.id}>{todo.title} : {todo.description}</p>):
+            state.todos.map((todo, index) => <Todo key={index} title={todo.title} description={todo.description} />):
             <p>Add some todos!</p>
         }
         </div>
