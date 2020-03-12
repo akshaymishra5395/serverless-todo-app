@@ -82,18 +82,22 @@ function App() {
         dispatch({ type: QUERY, todos: todoData.data.listTodos.items });
     }
 
-    useEffect(() => {
+    useEffect((todos) => {
         getData();
 
         const subscription = API.graphql(graphqlOperation(onCreateTodo)).subscribe({
             next: (eventData) => {
                 const todo = eventData.value.data.onCreateTodo;
-                dispatch({ type: SUBSCRIPTION, todo });
+                // Subscription event may occur multiple times due to the specification of the Optimistic response of AppSync api client.
+                // https://aws-amplify.github.io/docs/js/api#offline-settings
+                if (! todos.map(item => item.id).exists(todo.id)) {
+                    dispatch({ type: SUBSCRIPTION, todo });
+                }
             }
         });
 
         return () => subscription.unsubscribe();
-    }, []);
+    }, [state.todos]);
 
     return (
         <div className='App'>
