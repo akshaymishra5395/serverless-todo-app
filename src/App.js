@@ -56,7 +56,7 @@ function TodoForm({ addTodo }) {
   };
 
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <input
         type="text"
         className="todoTitle"
@@ -69,7 +69,7 @@ function TodoForm({ addTodo }) {
         value={description}
         onChange={e => setDescription(e.target.value)}
       />
-      <button onClick={handleSubmit}/>
+      <input type="submit" hidden={true}/>
     </form>
   );
 }
@@ -77,11 +77,12 @@ function TodoForm({ addTodo }) {
 function App() {
     const [state, dispatch] = useReducer(reducer, initialState);
 
+    async function getData() {
+        const todoData = await API.graphql(graphqlOperation(listTodos));
+        dispatch({ type: QUERY, todos: todoData.data.listTodos.items });
+    }
+
     useEffect(() => {
-        async function getData() {
-            const todoData = await API.graphql(graphqlOperation(listTodos));
-            dispatch({ type: QUERY, todos: todoData.data.listTodos.items });
-        }
         getData();
 
         const subscription = API.graphql(graphqlOperation(onCreateTodo)).subscribe({
@@ -95,16 +96,15 @@ function App() {
     }, []);
 
     return (
-        <div className='.app'>
-        <div>
+        <div className='App'>
             <TodoForm addTodo={createNewTodo}/>
-        </div>
-        <div className='todo-list'>
-        {state.todos.length > 0 ?
-            state.todos.map((todo, index) => <Todo key={index} title={todo.title} description={todo.description} />):
-            <p>Add some todos!</p>
-        }
-        </div>
+            <div className='todo-list'>
+                {
+                    state.todos.length > 0 ?
+                    state.todos.map((todo, index) => <Todo key={index} title={todo.title} description={todo.description} />):
+                    <p>Add some todos!</p>
+                }
+            </div>
         </div>
     );
 }
