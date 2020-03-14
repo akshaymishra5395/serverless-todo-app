@@ -101,8 +101,18 @@ function App() {
     const [state, dispatch] = useReducer(reducer, initialState);
 
     async function getData() {
-        const todoData = await API.graphql(graphqlOperation(listTodos));
-        dispatch({ type: QUERY, todos: todoData.data.listTodos.items });
+        let todoData = await API.graphql(graphqlOperation(listTodos));
+        const todos = todoData.data.listTodos.items;
+
+        let nextToken = todoData.data.listTodos.nextToken;
+
+        while (nextToken) {
+            const next = await API.graphql(graphqlOperation(listTodos, { nextToken }));
+            todos.push(...next.data.listTodos.items);
+            nextToken = next.data.listTodos.nextToken;
+        }
+
+        dispatch({ type: QUERY, todos: todos });
     }
 
     useEffect(() => {
