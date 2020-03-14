@@ -83,14 +83,17 @@ function TodoForm({ addTodo }) {
   };
 
   return (
+      <div className="todoForm">
     <form onSubmit={handleSubmit}>
       <input
         type="text"
         className="inputTodoText"
         value={text}
         onChange={e => setText(e.target.value)}
+        placeholder="Add some todos"
       />
     </form>
+      </div>
   );
 }
 
@@ -134,9 +137,7 @@ function App() {
             <div className='todo-list'>
                 <TodoForm addTodo={createNewTodo}/>
                 {
-                    state.todos.length > 0 ?
-                    state.todos.map((todo, index) => <Todo key={index} todo={todo} />):
-                    <p>Add some todos!</p>
+                    state.todos.map((todo, index) => <Todo key={index} todo={todo} />)
                 }
             </div>
         </div>
