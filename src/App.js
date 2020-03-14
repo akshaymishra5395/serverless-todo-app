@@ -133,7 +133,7 @@ function App() {
     useEffect(() => {
         let subscription;
         getUser().then((user) => {
-            subscription = API.graphql(graphqlOperation(onCreateTodo, {owner: user.username})).subscribe({
+            subscription = API.graphql(graphqlOperation(onCreateTodo, { owner: user.username })).subscribe({
                 next: (eventData) => {
                     const todo = eventData.value.data.onCreateTodo;
                     dispatch({ type: SUBSCRIPTION, todo });
@@ -147,7 +147,7 @@ function App() {
     useEffect(() => {
         let subscription;
         getUser().then((user) => {
-            subscription = API.graphql(graphqlOperation(onUpdateTodo)).subscribe({
+            subscription = API.graphql(graphqlOperation(onUpdateTodo, { owner: user.username })).subscribe({
                 next: (eventData) => {
                     const todo = eventData.value.data.onUpdateTodo;
                     dispatch({ type: UPDATE, todo });
