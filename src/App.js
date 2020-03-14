@@ -56,7 +56,7 @@ function TodoForm({ addTodo }) {
     <form onSubmit={handleSubmit}>
       <input
         type="text"
-        className="todoTitle"
+        className="inputTodoText"
         value={text}
         onChange={e => setText(e.target.value)}
       />

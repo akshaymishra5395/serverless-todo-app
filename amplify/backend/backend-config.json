@@ -9,7 +9,7 @@
 					"defaultAuthentication": {
 						"authenticationType": "API_KEY",
 						"apiKeyConfig": {
-							"description": "Todo app api key",
+							"description": "",
 							"apiKeyExpirationDays": 7
 						}
 					}

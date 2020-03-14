@@ -5,8 +5,7 @@ export const getTodo = /* GraphQL */ `
   query GetTodo($id: ID!) {
     getTodo(id: $id) {
       id
-      title
-      description
+      text
     }
   }
 `;
@@ -19,8 +18,7 @@ export const listTodos = /* GraphQL */ `
     listTodos(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        title
-        description
+        text
       }
       nextToken
     }

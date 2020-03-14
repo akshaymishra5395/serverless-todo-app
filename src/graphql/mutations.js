@@ -8,8 +8,7 @@ export const createTodo = /* GraphQL */ `
   ) {
     createTodo(input: $input, condition: $condition) {
       id
-      title
-      description
+      text
     }
   }
 `;
@@ -20,8 +19,7 @@ export const updateTodo = /* GraphQL */ `
   ) {
     updateTodo(input: $input, condition: $condition) {
       id
-      title
-      description
+      text
     }
   }
 `;
@@ -32,8 +30,7 @@ export const deleteTodo = /* GraphQL */ `
   ) {
     deleteTodo(input: $input, condition: $condition) {
       id
-      title
-      description
+      text
     }
   }
 `;
