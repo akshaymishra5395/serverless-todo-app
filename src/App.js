@@ -92,8 +92,8 @@ function App() {
 
     return (
         <div className='App'>
-            <TodoForm addTodo={createNewTodo}/>
             <div className='todo-list'>
+                <TodoForm addTodo={createNewTodo}/>
                 {
                     state.todos.length > 0 ?
                     state.todos.map((todo, index) => <Todo key={index} text={todo.text} />):
