@@ -7,6 +7,8 @@ export const getTodo = /* GraphQL */ `
       id
       text
       complete
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -21,6 +23,8 @@ export const listTodos = /* GraphQL */ `
         id
         text
         complete
+        createdAt
+        updatedAt
       }
       nextToken
     }

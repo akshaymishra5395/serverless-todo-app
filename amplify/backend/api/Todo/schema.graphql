@@ -2,4 +2,6 @@ type Todo @model {
 	id: ID!
 	text: String!
 	complete: Boolean!
+	createdAt: AWSDateTime
+	updatedAt: AWSDateTime
 }

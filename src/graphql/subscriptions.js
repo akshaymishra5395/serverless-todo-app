@@ -7,6 +7,8 @@ export const onCreateTodo = /* GraphQL */ `
       id
       text
       complete
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -16,6 +18,8 @@ export const onUpdateTodo = /* GraphQL */ `
       id
       text
       complete
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -25,6 +29,8 @@ export const onDeleteTodo = /* GraphQL */ `
       id
       text
       complete
+      createdAt
+      updatedAt
     }
   }
 `;
