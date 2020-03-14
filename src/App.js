@@ -52,16 +52,22 @@ async function createNewTodo(text) {
 async function completeTodo(todo) {
     await API.graphql(graphqlOperation(updateTodo, { input: {
         id: todo.id,
-        complete: true
+        complete: !todo.complete
     }}));
 }
 
 const Todo = ({ todo }) => (
     <div className="todo">
-        <p style={{textDecoration: todo.complete ? "line-through": ""}}>
+        <p>
+        {
+            todo.complete ?
+                <a href="#" onClick={() => completeTodo(todo)}><span className="completed"></span></a> :
+                <a href="#" onClick={() => completeTodo(todo)}><span className="doing"></span></a>
+        }
+        <span style={{textDecoration: todo.complete ? "line-through": ""}}>
             {todo.text}
+        </span>
         </p>
-        <button onClick={() => completeTodo(todo)}>Complete</button>
     </div>
 );
 

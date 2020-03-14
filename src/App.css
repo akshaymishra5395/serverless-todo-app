@@ -80,3 +80,53 @@ footer .footer-text {
     text-align : center;
     padding: 1em;
 }
+
+.todo .completed{
+    padding-left:24px;
+    position:relative;
+}
+.todo .completed:before,
+.todo .completed:after{
+    content:"";
+    display:block;
+    position:absolute;
+}
+.todo .completed:before{
+    width:16px;
+    height:16px;
+    border-radius:3px;
+    background:#ffffff;
+    border:1px solid #000000;
+    left:0;top:2px;
+}
+.todo .completed:after{
+    border-left:2px solid #ff0000;
+    border-bottom:2px solid #ff0000;
+    width:15px;
+    height:5px;
+    -webkit-transform:rotate(-45deg);
+    transform:rotate(-45deg);
+    left:5px;
+    top:3px;
+}
+
+
+.todo .doing{
+    padding-left:24px;
+    position:relative;
+}
+
+.todo .doing:before,
+.todo .doing:after{
+    content:"";
+    display:block;
+    position:absolute;
+}
+.todo .doing:before{
+    width:16px;
+    height:16px;
+    border-radius:3px;
+    background:#ffffff;
+    border:1px solid #000000;
+    left:0;top:2px;
+}
