@@ -36,22 +36,20 @@ const reducer = (state, action) => {
     }
 };
 
-async function createNewTodo(title, description) {
-    const todo = { title: title, description: description };
+async function createNewTodo(text) {
+    const todo = { text: text };
     await API.graphql(graphqlOperation(createTodo, { input: todo }));
 }
 
-const Todo = ({ title, description }) => <div className="todo">{title}: {description}</div>;
+const Todo = ({ text }) => <div className="todo">{text}</div>;
 
 function TodoForm({ addTodo }) {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [text, setText] = useState("");
 
   const handleSubmit = () => {
-    if (!title || !description) return;
-    addTodo(title, description);
-    setTitle("");
-    setDescription("");
+    if (!text) return;
+    addTodo(text);
+    setText("");
   };
 
   return (
@@ -59,16 +57,9 @@ function TodoForm({ addTodo }) {
       <input
         type="text"
         className="todoTitle"
-        value={title}
-        onChange={e => setTitle(e.target.value)}
+        value={text}
+        onChange={e => setText(e.target.value)}
       />
-      <input
-        type="text"
-        className="todoDescription"
-        value={description}
-        onChange={e => setDescription(e.target.value)}
-      />
-      <input type="submit" hidden={true}/>
     </form>
   );
 }
@@ -104,7 +95,7 @@ function App() {
             <div className='todo-list'>
                 {
                     state.todos.length > 0 ?
-                    state.todos.map((todo, index) => <Todo key={index} title={todo.title} description={todo.description} />):
+                    state.todos.map((todo, index) => <Todo key={index} text={todo.text} />):
                     <p>Add some todos!</p>
                 }
             </div>
