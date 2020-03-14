@@ -97,9 +97,20 @@ function TodoForm({ addTodo }) {
 
 function App() {
     const [state, dispatch] = useReducer(reducer, initialState);
+    const [user, setUser] = useState("");
 
-    async function getData() {
-        let todoData = await API.graphql(graphqlOperation(listTodos));
+    async function getUser(){
+        const user = await Auth.currentUserInfo();
+        setUser(user);
+        return user
+    }
+
+    useEffect(() => {
+        getUser();
+    }, [])
+
+    async function getData(user) {
+        let todoData = await API.graphql(graphqlOperation(listTodos, { owner: user.username }));
         const todos = todoData.data.listTodos.items;
 
         let nextToken = todoData.data.listTodos.nextToken;
@@ -114,28 +125,35 @@ function App() {
     }
 
     useEffect(() => {
-        getData();
+        getUser().then((user) => {
+            getData(user);
+        })
     }, [])
 
     useEffect(() => {
-        const subscription = API.graphql(graphqlOperation(onCreateTodo)).subscribe({
-            next: (eventData) => {
-                const todo = eventData.value.data.onCreateTodo;
-                dispatch({ type: SUBSCRIPTION, todo });
-            }
-        });
+        let subscription;
+        getUser().then((user) => {
+            subscription = API.graphql(graphqlOperation(onCreateTodo, {owner: user.username})).subscribe({
+                next: (eventData) => {
+                    const todo = eventData.value.data.onCreateTodo;
+                    dispatch({ type: SUBSCRIPTION, todo });
+                }
+            });
+        })
 
         return () => subscription.unsubscribe();
     }, []);
 
     useEffect(() => {
-        const subscription = API.graphql(graphqlOperation(onUpdateTodo)).subscribe({
-            next: (eventData) => {
-                const todo = eventData.value.data.onUpdateTodo;
-                console.log("at update subscription");
-                dispatch({ type: UPDATE, todo });
-            }
-        });
+        let subscription;
+        getUser().then((user) => {
+            subscription = API.graphql(graphqlOperation(onUpdateTodo)).subscribe({
+                next: (eventData) => {
+                    const todo = eventData.value.data.onUpdateTodo;
+                    dispatch({ type: UPDATE, todo });
+                }
+            });
+        })
 
         return () => subscription.unsubscribe();
     }, []);
