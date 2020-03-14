@@ -47,8 +47,7 @@ function TodoForm({ addTodo }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
-  const handleSubmit = e => {
-    e.preventDefault();
+  const handleSubmit = () => {
     if (!title || !description) return;
     addTodo(title, description);
     setTitle("");
