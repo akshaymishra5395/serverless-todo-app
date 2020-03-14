@@ -139,14 +139,26 @@ function App() {
 
         return () => subscription.unsubscribe();
     }, []);
+    
+    function DoingTodos() {
+        const sorted = state.todos
+            .filter(todo => ! todo.complete)
+            .sort((a, b) => a.updatedAt < b.updatedAt ? 1 : -1);
+        return sorted.map((todo, index) => <Todo key={index} todo={todo} />)
+    }
+    function FinishedTodos() {
+        const sorted = state.todos
+            .filter(todo => todo.complete)
+            .sort((a, b) => a.updatedAt < b.updatedAt ? 1 : -1);
+        return sorted.map((todo, index) => <Todo key={index} todo={todo} />)
+    }
 
     return (
         <div className='App'>
             <div className='todo-list'>
                 <TodoForm addTodo={createNewTodo}/>
-                {
-                    state.todos.map((todo, index) => <Todo key={index} todo={todo} />)
-                }
+                <DoingTodos />
+                <FinishedTodos />
             </div>
         </div>
     );
