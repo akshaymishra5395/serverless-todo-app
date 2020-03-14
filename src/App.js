@@ -45,11 +45,12 @@ const reducer = (state, action) => {
 };
 
 async function createNewTodo(text) {
-    const todo = { text: text, complete: false };
+    const todo = { text: text, complete: false }; 
     await API.graphql(graphqlOperation(createTodo, { input: todo }));
 }
 
-async function completeTodo(todo) {
+async function completeTodo(event, todo) {
+    event.preventDefault();
     await API.graphql(graphqlOperation(updateTodo, { input: {
         id: todo.id,
         complete: !todo.complete
@@ -61,8 +62,8 @@ const Todo = ({ todo }) => (
         <p>
         {
             todo.complete ?
-                <a href="#" onClick={() => completeTodo(todo)}><span className="completed"></span></a> :
-                <a href="#" onClick={() => completeTodo(todo)}><span className="doing"></span></a>
+                <a href="#" onClick={(event) => completeTodo(event, todo)}><span className="completed"></span></a> :
+                <a href="#" onClick={(event) => completeTodo(event, todo)}><span className="doing"></span></a>
         }
         <span style={{textDecoration: todo.complete ? "line-through": ""}}>
             {todo.text}
