@@ -20,6 +20,7 @@ PubSub.configure(awsconfig);
 // Action Types
 const QUERY = 'QUERY';
 const SUBSCRIPTION = 'SUBSCRIPTION';
+const UPDATE = 'UPDATE';
 
 const initialState = {
     todos: [],
@@ -31,6 +32,13 @@ const reducer = (state, action) => {
             return {...state, todos: action.todos};
         case SUBSCRIPTION:
             return {...state, todos:[...state.todos, action.todo]};
+        case UPDATE:
+            const updated = action.todo;
+            const nextTodos = state.todos.map(todo => {
+                return todo.id === updated.id ? updated : todo
+            });
+
+            return {...state, todos: nextTodos }
         default:
             return state;
     }
@@ -107,7 +115,7 @@ function App() {
             next: (eventData) => {
                 const todo = eventData.value.data.onUpdateTodo;
                 console.log("at update subscription");
-                dispatch({ type: SUBSCRIPTION, todo });
+                dispatch({ type: UPDATE, todo });
             }
         });
 
