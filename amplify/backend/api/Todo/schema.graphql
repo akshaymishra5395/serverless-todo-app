@@ -1,7 +1,12 @@
-type Todo @model @searchable {
-	id: ID!
-	text: String!
-	complete: Boolean!
-	createdAt: AWSDateTime
-	updatedAt: AWSDateTime
+type Todo
+    @model
+    @auth(rules: [{allow: owner}])
+    @searchable
+{
+    id: ID!
+    owner: String
+    text: String!
+    complete: Boolean!
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
 }
