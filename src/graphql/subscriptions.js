@@ -6,6 +6,7 @@ export const onCreateTodo = /* GraphQL */ `
     onCreateTodo {
       id
       text
+      complete
     }
   }
 `;
@@ -14,6 +15,7 @@ export const onUpdateTodo = /* GraphQL */ `
     onUpdateTodo {
       id
       text
+      complete
     }
   }
 `;
@@ -22,6 +24,7 @@ export const onDeleteTodo = /* GraphQL */ `
     onDeleteTodo {
       id
       text
+      complete
     }
   }
 `;
