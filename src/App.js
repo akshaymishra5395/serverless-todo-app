@@ -83,7 +83,6 @@ function TodoForm({ addTodo }) {
   };
 
   return (
-      <div className="todoForm">
     <form onSubmit={handleSubmit}>
       <input
         type="text"
@@ -93,7 +92,6 @@ function TodoForm({ addTodo }) {
         placeholder="Add some todos"
       />
     </form>
-      </div>
   );
 }
 
