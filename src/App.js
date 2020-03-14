@@ -6,9 +6,9 @@ import PubSub from '@aws-amplify/pubsub';
 
 import { withAuthenticator } from 'aws-amplify-react';
 
-import { createTodo } from './graphql/mutations';
+import { createTodo, updateTodo } from './graphql/mutations';
 import { listTodos } from './graphql/queries';
-import { onCreateTodo } from './graphql/subscriptions';
+import { onCreateTodo, onUpdateTodo } from './graphql/subscriptions';
 
 import awsconfig from './aws-exports';
 import './App.css';
@@ -37,11 +37,25 @@ const reducer = (state, action) => {
 };
 
 async function createNewTodo(text) {
-    const todo = { text: text };
+    const todo = { text: text, complete: false };
     await API.graphql(graphqlOperation(createTodo, { input: todo }));
 }
 
-const Todo = ({ text }) => <div className="todo">{text}</div>;
+async function completeTodo(todo) {
+    await API.graphql(graphqlOperation(updateTodo, { input: {
+        id: todo.id,
+        complete: true
+    }}));
+}
+
+const Todo = ({ todo }) => (
+    <div className="todo">
+        <p style={{textDecoration: todo.complete ? "line-through": ""}}>
+            {todo.text}
+        </p>
+        <button onClick={() => completeTodo(todo)}>Complete</button>
+    </div>
+);
 
 function TodoForm({ addTodo }) {
   const [text, setText] = useState("");
@@ -73,22 +87,32 @@ function App() {
         dispatch({ type: QUERY, todos: todoData.data.listTodos.items });
     }
 
-    useEffect((todos) => {
+    useEffect(() => {
         getData();
+    }, [])
 
+    useEffect(() => {
         const subscription = API.graphql(graphqlOperation(onCreateTodo)).subscribe({
             next: (eventData) => {
                 const todo = eventData.value.data.onCreateTodo;
-                // Subscription event may occur multiple times due to the specification of the Optimistic response of AppSync api client.
-                // https://aws-amplify.github.io/docs/js/api#offline-settings
-                if (! todos.map(item => item.id).exists(todo.id)) {
-                    dispatch({ type: SUBSCRIPTION, todo });
-                }
+                dispatch({ type: SUBSCRIPTION, todo });
             }
         });
 
         return () => subscription.unsubscribe();
-    }, [state.todos]);
+    }, []);
+
+    useEffect(() => {
+        const subscription = API.graphql(graphqlOperation(onUpdateTodo)).subscribe({
+            next: (eventData) => {
+                const todo = eventData.value.data.onUpdateTodo;
+                console.log("at update subscription");
+                dispatch({ type: SUBSCRIPTION, todo });
+            }
+        });
+
+        return () => subscription.unsubscribe();
+    }, []);
 
     return (
         <div className='App'>
@@ -96,7 +120,7 @@ function App() {
                 <TodoForm addTodo={createNewTodo}/>
                 {
                     state.todos.length > 0 ?
-                    state.todos.map((todo, index) => <Todo key={index} text={todo.text} />):
+                    state.todos.map((todo, index) => <Todo key={index} todo={todo} />):
                     <p>Add some todos!</p>
                 }
             </div>
