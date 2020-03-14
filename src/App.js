@@ -46,7 +46,8 @@ const Todo = ({ text }) => <div className="todo">{text}</div>;
 function TodoForm({ addTodo }) {
   const [text, setText] = useState("");
 
-  const handleSubmit = () => {
+  const handleSubmit = e => {
+    e.preventDefault();
     if (!text) return;
     addTodo(text);
     setText("");
