@@ -32,29 +32,3 @@ export const listTodos = /* GraphQL */ `
     }
   }
 `;
-export const searchTodos = /* GraphQL */ `
-  query SearchTodos(
-    $filter: SearchableTodoFilterInput
-    $sort: SearchableTodoSortInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    searchTodos(
-      filter: $filter
-      sort: $sort
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        owner
-        text
-        complete
-        createdAt
-        updatedAt
-      }
-      nextToken
-      total
-    }
-  }
-`;

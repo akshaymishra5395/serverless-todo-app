@@ -1,7 +1,6 @@
 type Todo
     @model
     @auth(rules: [{allow: owner}])
-    @searchable
 {
     id: ID!
     owner: String
